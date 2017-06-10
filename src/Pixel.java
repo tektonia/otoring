@@ -1,29 +1,62 @@
 /*
- * Pixel definitions
+ * Point definitions
  * 
  * 2017 - VVS
  */
 
-public class Pixel{
-	static final int PIXEL_LEN = 4;
-	double[] pixel=new double[PIXEL_LEN];
-
-	Pixel(double[] p){pixel =p.clone();}
+/**
+ * 
+ * Point
+ * 
+ *   A Point is defined as a Pixel at (x,y).
+ *   The distance of that pixel to the origin is dist
+ * 
+ * @author Vitor Vaz da Silva
+ *
+ */
+public class Point{
+	double x;
+	double y;
+	double dist;
+	Pixel pixel;
 	
-	Pixel(Pixel p) {pixel=p.pixel.clone();}
+	/**
+	 * Point
+	 * 
+	 * Create a new point x,y at distance d away
+	 * 
+	 * @param x
+	 * @param y
+	 * @param d
+	 */
+	Point(double x, double y, double d){ this.x=x; this.y=y; dist=d;}
 	
-	public String toString(){ return "0:"+pixel[0]+" 1:"+pixel[1]+" 2:"+pixel[2]+" 3:"+pixel[3];}
+	/**
+	 * Point
+	 * 
+	 * Create a new point x,y at distance d away with pixel px
+	 * 
+	 * @param x
+	 * @param y
+	 * @param d
+	 * @param px
+	 */
+	Point(double x, double y, double d, int[] px){ this(x,y,d); pixel=new Pixel(px);}
 	
-	public double canal(int c){ return pixel[c];}
-	public double mean(){ return (pixel[0]+pixel[1]+pixel[2]+pixel[3])/4.0;}
-	public double[] value(){ return pixel;}
+	/**
+	 * Point
+	 * 
+	 * Create a new Point equal to p (clone)
+	 * 
+	 * @param p
+	 */
+	Point (Point p) {this(p.x, p.y, p.dist); pixel=new Pixel(p.pixel);}
 	
-	Pixel(int[] p){
-		pixel =new double[p.length];
-		int i=0;
-		for(int n:p) pixel[i++]=n;
-	}
-	
-	public void setCanal(int canal, double intt) { pixel[canal]=intt; }	
-	
+	/**
+	 *  toString()
+	 *  
+	 *  String containing the description of a Point
+	 */
+	public String toString(){ return "x:"+x+" y:"+y+" d:"+dist+" "+pixel.toString(); }
+			
 }
