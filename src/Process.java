@@ -36,47 +36,47 @@ public class Process {
      * @param iProc
      * @param roi
      * @param image
-     * @param opcao
+     * @param op
      */
-	public static void exec(ImageProcessor iProc, Roi roi, ImagePlus image, Option opcao){
+	public static void exec(ImageProcessor iProc, Roi roi, ImagePlus image, Option op){
 
 		FloatPolygon polF=roi.getInterpolatedPolygon();
 		perfilROI = new OtoProfile(polF, image);
 		OtoProfile original = new OtoProfile(polF, image);
-		Draw draw = new Draw(opcao.getCanal());
+		Canal can=op.getCanal();
 		Plot plotOriginal=null;
 		
-if(DEBUG) draw.plot(original,"1 - Profile of Image intersected by Line");
+if(DEBUG) Draw.plot(original,"1 - Profile of Image intersected by Line", can);
 				
-		if(opcao.getDrawOriginal()) plotOriginal=draw.plot(perfilROI,"With Original profile");
+		if(op.getDrawOriginal()) plotOriginal=Draw.plot(perfilROI,"With Original profile", can);
 		
-		Filter fmmp=new MovingAverage(opcao.getNumFilterPoints(), perfilROI.index()[0].pixel.mean(), opcao.getBaseLevel());				
+		Filter fmmp=new MovingAverage(op.getNumFilterPoints(), perfilROI.index()[0].pixel.mean(), op.getBaseLevel());				
 		perfilROI.filtro(fmmp);		
 		OtoProfile pmm = new OtoProfile(perfilROI.filtrar(), image);
-if(DEBUG) draw.plot(pmm, "2 - Moving Average Filter");			
+if(DEBUG) Draw.plot(pmm, "2 - Moving Average Filter", can);			
 		pmm.buildSegments();		
 		
-if(DEBUG) draw.mark(pmm, "3 - Segments", pmm.getSegments(), null, Color.MAGENTA, false);	
-		pmm.smoothSegments(opcao.getGranularity(),Canal.GREEN_CH);
+if(DEBUG) Draw.mark(pmm, "3 - Segments", pmm.getSegments(), null, Color.MAGENTA, false);	
+		pmm.smoothSegments(op.getGranularity(),Canal.GREEN_CH);
 		
-if(DEBUG) draw.mark(pmm, "4 - Granularity polish", pmm.getSegments(), null, Color.MAGENTA, false);
+if(DEBUG) Draw.mark(pmm, "4 - Granularity polish", pmm.getSegments(), null, Color.MAGENTA, false);
 		pmm.joinSegments();
 		OtoProfile pan = new OtoProfile(pmm.segments(), image);
 
-if(DEBUG) draw.mark(pmm, "5 - Segment join", pmm.getSegments(), null, Color.MAGENTA, false);
+if(DEBUG) Draw.mark(pmm, "5 - Segment join", pmm.getSegments(), null, Color.MAGENTA, false);
 		
 		ArrayList<Segment> aneis = pmm.filterSegments(Canal.GREEN_CH);
 		
-if(DEBUG) draw.mark(pan, "6 - Determine Hills and Valleys", aneis, null, Color.MAGENTA, false);		
-		Plot plot=draw.mark(pan, "Filtred Profile", aneis, plotOriginal, Color.MAGENTA, opcao.getHLline());
+if(DEBUG) Draw.mark(pan, "6 - Determine Hills and Valleys", aneis, null, Color.MAGENTA, false);		
+		Plot plot=Draw.mark(pan, "Filtred Profile", aneis, plotOriginal, Color.MAGENTA, op.getHLline());
 		pmm.setSegments(aneis);
 
-		ArrayList <Segment>[] montesVales = pmm.countRings(aneis, opcao, Canal.GREEN_CH);
+		ArrayList <Segment>[] montesVales = pmm.countRings(aneis, op, Canal.GREEN_CH);
 		int monte=montesVales[0].size();
 		int vale=montesVales[1].size();
-		draw.markHillsAndValleys(montesVales[0],montesVales[1], plot);
+		Draw.markHillsAndValleys(montesVales[0],montesVales[1], plot);
 		
-if(DEBUG) draw.mark(pan, "8 - H and L selection", pmm.getSegments(), null, Color.MAGENTA, true);		
+if(DEBUG) Draw.mark(pan, "8 - H and L selection", pmm.getSegments(), null, Color.MAGENTA, true);		
 		plot.setColor(Color.BLACK);
 		plot.setFont(0, 18);
 
@@ -84,6 +84,6 @@ if(DEBUG) draw.mark(pan, "8 - H and L selection", pmm.getSegments(), null, Color
 		plot.updateImage();
 		
 		IJ.log(image.getTitle()+" ,"+monte+","+vale);
-		if(opcao.getMarkDraw()) draw.segments(aneis, opcao, Canal.GREEN_CH, iProc);
+		if(op.getMarkDraw()) Draw.segments(aneis, op, Canal.GREEN_CH, iProc);
 	}
 }
