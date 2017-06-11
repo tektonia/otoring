@@ -56,27 +56,27 @@ if(DEBUG) Draw.plot(original,"1 - Profile of Image intersected by Line", can);
 if(DEBUG) Draw.plot(pmm, "2 - Moving Average Filter", can);			
 		pmm.buildSegments();		
 		
-if(DEBUG) Draw.mark(pmm, "3 - Segments", pmm.getSegments(), null, Color.MAGENTA, false);	
+if(DEBUG) Draw.graph(pmm, "3 - Segments", pmm.getSegments(), null, Color.MAGENTA, false);	
 		pmm.smoothSegments(op.getGranularity(),Canal.GREEN_CH);
 		
-if(DEBUG) Draw.mark(pmm, "4 - Granularity polish", pmm.getSegments(), null, Color.MAGENTA, false);
+if(DEBUG) Draw.graph(pmm, "4 - Granularity polish", pmm.getSegments(), null, Color.MAGENTA, false);
 		pmm.joinSegments();
 		OtoProfile pan = new OtoProfile(pmm.segments(), image);
 
-if(DEBUG) Draw.mark(pmm, "5 - Segment join", pmm.getSegments(), null, Color.MAGENTA, false);
+if(DEBUG) Draw.graph(pmm, "5 - Segment join", pmm.getSegments(), null, Color.MAGENTA, false);
 		
-		ArrayList<Segment> aneis = pmm.filterSegments(Canal.GREEN_CH);
+		ArrayList<Segment> segments = pmm.filterSegments(Canal.GREEN_CH);
 		
-if(DEBUG) Draw.mark(pan, "6 - Determine Hills and Valleys", aneis, null, Color.MAGENTA, false);		
-		Plot plot=Draw.mark(pan, "Filtred Profile", aneis, plotOriginal, Color.MAGENTA, op.getHLline());
-		pmm.setSegments(aneis);
+if(DEBUG) Draw.graph(pan, "6 - Determine Hills and Valleys", segments, null, Color.MAGENTA, false);		
+		Plot plot=Draw.graph(pan, "Filtred Profile", segments, plotOriginal, Color.MAGENTA, op.getHLline());
+		pmm.setSegments(segments);
 
-		ArrayList <Segment>[] montesVales = pmm.countRings(aneis, op, Canal.GREEN_CH);
+		ArrayList <Segment>[] montesVales = pmm.countRings(segments, op, Canal.GREEN_CH);
 		int monte=montesVales[0].size();
 		int vale=montesVales[1].size();
 		Draw.markHillsAndValleys(montesVales[0],montesVales[1], plot);
 		
-if(DEBUG) Draw.mark(pan, "8 - H and L selection", pmm.getSegments(), null, Color.MAGENTA, true);		
+if(DEBUG) Draw.graph(pan, "8 - H and L selection", pmm.getSegments(), null, Color.MAGENTA, true);		
 		plot.setColor(Color.BLACK);
 		plot.setFont(0, 18);
 
@@ -84,6 +84,6 @@ if(DEBUG) Draw.mark(pan, "8 - H and L selection", pmm.getSegments(), null, Color
 		plot.updateImage();
 		
 		IJ.log(image.getTitle()+" ,"+monte+","+vale);
-		if(op.getMarkDraw()) Draw.segments(aneis, op, Canal.GREEN_CH, iProc);
+		if(op.getMarkDraw()) Draw.ringMark(segments, op, Canal.GREEN_CH, iProc);
 	}
 }
