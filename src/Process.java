@@ -50,9 +50,9 @@ if(DEBUG) Draw.plot(original,"1 - Profile of Image intersected by Line", can);
 				
 		if(op.getDrawOriginal()) plotOriginal=Draw.plot(perfilROI,"With Original profile", can);
 		
-		Filter fmmp=new MovingAverage(op.getNumFilterPoints(), perfilROI.index()[0].pixel.mean(), op.getBaseLevel());				
-		perfilROI.filtro(fmmp);		
-		OtoProfile pmm = new OtoProfile(perfilROI.filtrar(), image);
+		Filter fmmp=new MovingAverage(op.getNumFilterPoints(), perfilROI.points()[0].pixel.mean(), op.getBaseLevel());				
+		perfilROI.setFilter(fmmp);		
+		OtoProfile pmm = new OtoProfile(perfilROI.runFilter(), image);
 if(DEBUG) Draw.plot(pmm, "2 - Moving Average Filter", can);			
 		pmm.buildSegments();		
 		
@@ -61,7 +61,7 @@ if(DEBUG) Draw.graph(pmm, "3 - Segments", pmm.getSegments(), null, Color.MAGENTA
 		
 if(DEBUG) Draw.graph(pmm, "4 - Granularity polish", pmm.getSegments(), null, Color.MAGENTA, false);
 		pmm.joinSegments();
-		OtoProfile pan = new OtoProfile(pmm.segments(), image);
+		OtoProfile pan = new OtoProfile(pmm.segmentsToPoints(), image);
 
 if(DEBUG) Draw.graph(pmm, "5 - Segment join", pmm.getSegments(), null, Color.MAGENTA, false);
 		
