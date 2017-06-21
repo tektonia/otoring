@@ -1,0 +1,21 @@
+To Install OtoRing in ImageJ do one of the following options:
+
+Option 1 -
+- create a folder named OtoRing on the plugins folder of your ImageJ realease
+- copy the otoring_.jar file into that folder
+- restart ImageJ
+
+Option 2 - 
+- Open ImageJ and choose the menu option: Help->Update 
+- When the update ends, an ImageJ Updater window remains. Click on “Manage Update sites”.
+  Another window will appear and click on “Add update site”; and the last line which reads out as “New” should be changed to:
+    Name: OtoRing
+    Url: http://sites.imagej.net/OtoRing/
+    Active: Leave a tick in Active for installation and updates
+ Close the window 
+- The OtoRing file shows up as Install it. Click on “Apply Changes”. After the installation you will be asked to restart ImageJ.
+---- If the OtoRing file does not show up as Install it or not at all,
+     click on “Advanced Mode” and look for the OtoRing file (make sure there is a tick in Active on the “Manage Update sites"),
+     and set it for installation
+     
+     
