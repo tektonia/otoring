@@ -18,4 +18,5 @@ Option 2 -
      click on “Advanced Mode” and look for the OtoRing file (make sure there is a tick in Active on the “Manage Update sites"),
      and set it for installation
      
+ Visit: http://imagej.net/OtoRing
      
